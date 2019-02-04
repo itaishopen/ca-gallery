@@ -1,12 +1,13 @@
 
 
 function initPage() {
-    gProjs = createPortfolios();
-    renderBoard(gProjs)
+  gProjs = createPortfolios();
+  captchaCode()
+  renderBoard(gProjs)
 }
 
 function renderBoard(projs) {
-    var strHtmlPortfolio = projs.map(function (proj) {
+  var strHtmlPortfolio = projs.map(function (proj) {
     return `
         <div class="col-md-4 col-sm-6 portfolio-item">
         <a class="portfolio-link" data-toggle="modal" href="#portfolioModal${proj.id}">
@@ -22,13 +23,13 @@ function renderBoard(projs) {
         <p class="text-muted">${proj.title}</p>
         </div>
         </div>`
-    });
-    $('.portfolio-row').html(strHtmlPortfolio.join(''));
-    var counter = 0;
-    var strHtmlModal = projs.map(function (modal) {
-        counter++;
-        var time = new Date(modal.publishedAt)
-        return `
+  });
+  $('.portfolio-row').html(strHtmlPortfolio.join(''));
+  var counter = 0;
+  var strHtmlModal = projs.map(function (modal) {
+    counter++;
+    var time = new Date(modal.publishedAt)
+    return `
         <!-- Modal ${counter} -->
         <div class="portfolio-modal modal fade" id="portfolioModal${modal.id}" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog">
@@ -51,8 +52,8 @@ function renderBoard(projs) {
                         <li>Date: ${time}</li>
                         <li>Client: coding academy</li>
                         <li>Category: Illustration</li>
-                        <li><a href="https://github.com/itaishopen/${modal.id}">See the code in github</a></li>
-                        <li><a href="projs/${modal.id}/index.html">open</a></li>
+                        <li><a onclick="openInNewTub('https://github.com/itaishopen/${modal.id}')">See the code in github</a></li>
+                        <li><a onclick="openInNewTub('projs/${modal.id}/index.html')">open project</a></li>
                       </ul>
                       <button class="btn btn-primary" data-dismiss="modal" type="button">
                           <i class="fa fa-times"></i>
@@ -65,26 +66,76 @@ function renderBoard(projs) {
           </div>
         </div>
         `
-    });
-    $('.portfolio-modals').html(strHtmlModal.join(''));
+  });
+  $('.portfolio-modals').html(strHtmlModal.join(''));
 }
 
-function processForm(e) {
-  if (e.preventDefault) {
-    e.preventDefault();
-    var email = $('.input-email').val();
-    var subject = $('.input-subject').val();
-    var message = $('.input-message').val();
-    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${message}`);
-    return false;
-  }
+function captchaCode() {
+  var Numb1, Numb2, Numb3, Numb4, Code;
+  Numb1 = (Math.ceil(Math.random() * 10) - 1).toString();
+  Numb2 = (Math.ceil(Math.random() * 10) - 1).toString();
+  Numb3 = (Math.ceil(Math.random() * 10) - 1).toString();
+  Numb4 = (Math.ceil(Math.random() * 10) - 1).toString();
+
+  Code = Numb1 + Numb2 + Numb3 + Numb4;
+  $("#code").text(Code);
+  $('.captcha').val('').blur();
 }
 
-function saveForm() {
-  var form = $('.contact-me-form');
-  if (form.attachEvent) {
-      form.attachEvent("submit", processForm);
+function processForm() {
+  var userInput = $(".captcha").val();
+  var orgCode = $("#code").text();
+  if (userInput === "") {
+    $(".captcha-message").show();
+  } else if (userInput == orgCode) {
+    $(".captcha-message").hide();
   } else {
-      form.addEventListener("submit", processForm);
+    $(".captcha-message").hide();
+    captchaCode()
+  }
+  var emailFilter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,10})+$/;
+  var emailText = $(".email").val();
+  if (emailText === "") {
+    $(".email-message").show();
+  } else if (emailFilter.test(emailText)) {
+    $(".email").css({color: "#609D29"});
+    $(".email-message").hide();
+  } else {
+    $(".email").css({color: "#CE3B46"});
+    $(".email-message").hide();
+  }
+  var subjectFilter = /^([a-zA-Z \t]{3,15})+$/;
+  var subjectText = $(".subject").val();
+  if (subjectText === "") {
+    $(".subject-message").show();
+  } else if (subjectFilter.test(subjectText)) {
+    $(".subject").css({color: "#609D29"});
+    $(".subject-message").hide();
+  } else {
+    $(".subject").css({color: "#CE3B46"});
+    $(".subject-message").hide();
+  }
+  var messageText = $(".message").val();
+  if (messageText === "") {
+    $(".message-message").show();
+  } else {
+    $(".message-message").hide();
+  }
+  if (
+    userInput == orgCode &&
+    emailFilter.test(emailText) &&
+    subjectFilter.test(subjectText)
+  ) {
+    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${emailText}&su=${subject}&body=${messageText}`);
+    $('.email').val('').blur();
+    $('.subject').val('').blur();
+    $('.message').val('').blur();
+  } else {
+    captchaCode()
   }
 }
+
+function openInNewTub(link) {
+  window.open(link);
+}
+

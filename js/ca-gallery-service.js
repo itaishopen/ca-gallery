@@ -9,7 +9,7 @@ function createPortfolios() {
         var projIds = ['book-shop', 'minesweeper'];
         var projNames = ['Book shop', 'Minesweeper game'];
         var titles = ['Menage the store', 'Find those mines'];
-        var descs = ['A simple book store manage platform', 'The most nostalgic game remastered to work on you browser'];
+        var descs = ['A simple book store manage platform', 'The most nostalgic game remastered to work on your browser'];
         var time = [1561399260000, 1548352860000];
         var labels = [['book store', 'site manage'], ['oldie game', 'fun game']];
         for (var i=0; i < projNames.length; i++) {
