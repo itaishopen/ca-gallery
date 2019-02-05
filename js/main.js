@@ -89,8 +89,10 @@ function processForm() {
     $(".captcha-message").show();
   } else if (userInput == orgCode) {
     $(".captcha-message").hide();
+    $(".captcha-message-input").hide();
   } else {
     $(".captcha-message").hide();
+    $(".captcha-message-input").show();
     captchaCode()
   }
   var emailFilter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,10})+$/;
@@ -100,9 +102,11 @@ function processForm() {
   } else if (emailFilter.test(emailText)) {
     $(".email").css({color: "#609D29"});
     $(".email-message").hide();
+    $(".email-message-input").hide();
   } else {
     $(".email").css({color: "#CE3B46"});
     $(".email-message").hide();
+    $(".email-message-input").show();
   }
   var subjectFilter = /^([a-zA-Z \t]{3,15})+$/;
   var subjectText = $(".subject").val();
@@ -111,9 +115,11 @@ function processForm() {
   } else if (subjectFilter.test(subjectText)) {
     $(".subject").css({color: "#609D29"});
     $(".subject-message").hide();
+    $(".subject-message-input").hide();
   } else {
     $(".subject").css({color: "#CE3B46"});
     $(".subject-message").hide();
+    $(".subject-message-input").show();
   }
   var messageText = $(".message").val();
   if (messageText === "") {
