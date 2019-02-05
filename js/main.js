@@ -2,8 +2,8 @@
 
 function initPage() {
   gProjs = createPortfolios();
-  captchaCode()
-  renderBoard(gProjs)
+  captchaCode();
+  renderBoard(gProjs);
 }
 
 function renderBoard(projs) {
@@ -24,11 +24,11 @@ function renderBoard(projs) {
         </div>
         </div>`
   });
-  $('.portfolio-row').html(strHtmlPortfolio.join(''));
+  $('.portfolio').html(strHtmlPortfolio.join(''));
   var counter = 0;
   var strHtmlModal = projs.map(function (modal) {
     counter++;
-    var time = new Date(modal.publishedAt)
+    var time = new Date(modal.publishedAt);
     return `
         <!-- Modal ${counter} -->
         <div class="portfolio-modal modal fade" id="portfolioModal${modal.id}" tabindex="-1" role="dialog" aria-hidden="true">
@@ -87,7 +87,7 @@ function processForm() {
   var orgCode = $("#code").text();
   if (userInput === "") {
     $(".captcha-message").show();
-  } else if (userInput == orgCode) {
+  } else if (userInput === orgCode) {
     $(".captcha-message").hide();
     $(".captcha-message-input").hide();
   } else {
@@ -128,11 +128,11 @@ function processForm() {
     $(".message-message").hide();
   }
   if (
-    userInput == orgCode &&
+    userInput === orgCode &&
     emailFilter.test(emailText) &&
     subjectFilter.test(subjectText)
   ) {
-    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${emailText}&su=${subject}&body=${messageText}`);
+    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=itaishopen@gmail.com&su='${emailText}'  '${subject}&body=${messageText}`);
     $('.email').val('').blur();
     $('.subject').val('').blur();
     $('.message').val('').blur();
